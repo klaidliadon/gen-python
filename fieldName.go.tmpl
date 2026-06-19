@@ -1,0 +1,11 @@
+{{- define "fieldName" -}}
+{{- /* JSON wire key for a field, honoring the "json" meta tag. */ -}}
+{{- $field := .Field -}}
+{{- $fieldName := $field.Name -}}
+{{- range $meta := $field.Meta -}}
+    {{- if exists $meta "json" -}}
+    {{- $fieldName = get $meta "json" | split "," | first -}}
+    {{- end -}}
+{{- end -}}
+{{- $fieldName -}}
+{{- end -}}
