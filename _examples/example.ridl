@@ -25,6 +25,7 @@ struct Item
     - name: ItemName
     - tier: ItemTier
     - count: uint32
+    - quantity: Quantity
     - balance: bigint
     - tags: []string
     - attributes: map<string,string>

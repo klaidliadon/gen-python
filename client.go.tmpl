@@ -3,6 +3,7 @@
 {{- $aliasMap := .AliasMap -}}
 {{- $basepath := .BasePath -}}
 {{- $services := .Services -}}
+{{- $webrpcHeader := .WebrpcHeader -}}
 {{- $kw := list "False" "None" "True" "and" "as" "assert" "async" "await" "break" "class" "continue" "def" "del" "elif" "else" "except" "finally" "for" "from" "global" "if" "import" "in" "is" "lambda" "nonlocal" "not" "or" "pass" "raise" "return" "try" "while" "with" "yield" -}}
 {{- range $_, $service := $services}}
 
@@ -24,7 +25,7 @@ class {{$service.Name}}Client:
                 "{{$ik}}": {{if $in.Optional}}None if {{$ip}} is None else {{end}}{{template "toValue" dict "Type" $in.Type "TypeMap" $typeMap "AliasMap" $aliasMap "Var" $ip}},
 {{- end}}
             },
-            headers={"Content-Type": "application/json", "Accept": "application/json", "Webrpc": WEBRPC_HEADER_VALUE},
+            headers={"Content-Type": "application/json", "Accept": "application/json"{{if $webrpcHeader}}, "Webrpc": WEBRPC_HEADER_VALUE{{end}}},
         )
         _data = self._handle_response(_resp)
 {{- if eq (len $method.Outputs) 0}}

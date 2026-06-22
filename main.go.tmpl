@@ -5,6 +5,7 @@
 {{- set $opts "client" (ternary (in .Opts.client "" "true") true false) -}}
 {{- set $opts "server" (ternary (in .Opts.server "" "true") true false) -}}
 {{- set $opts "schemaHash" (ternary (eq (default .Opts.schemaHash "true") "false") false true) -}}
+{{- set $opts "webrpcHeader" (ternary (eq (default .Opts.webrpcHeader "true") "false") false true) -}}
 
 {{- /* Print help on -help. */ -}}
 {{- if exists .Opts "help" -}}
@@ -87,7 +88,7 @@ WEBRPC_SCHEMA_HASH = "{{.SchemaHash}}"
 {{template "errors" dict "WebrpcErrors" .WebrpcErrors "Errors" .Errors}}
 {{template "helpers" dict}}
 {{- if $opts.client}}
-{{template "client" dict "BasePath" .BasePath "Services" .Services "TypeMap" $typeMap "AliasMap" $aliasMap}}
+{{template "client" dict "BasePath" .BasePath "Services" .Services "TypeMap" $typeMap "AliasMap" $aliasMap "WebrpcHeader" $opts.webrpcHeader}}
 {{- end}}
 {{- if $opts.server}}
 {{template "server" dict "BasePath" .BasePath "Services" .Services "TypeMap" $typeMap "AliasMap" $aliasMap}}
