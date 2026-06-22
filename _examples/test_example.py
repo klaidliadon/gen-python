@@ -27,6 +27,7 @@ def _make_item():
         name="widget",            # ItemName alias -> str
         tier=api.ItemTier.PREMIUM,
         count=5,
+        quantity=12,              # Quantity alias -> int
         balance=9007199254740993,  # > 2**53, must survive as a decimal string on the wire
         tags=["a", "b"],
         attributes={"k": "v"},
@@ -66,6 +67,7 @@ class Impl:
 
 def test_wire_shape():
     d = _make_item().to_dict()
+    assert d["quantity"] == 12                                # Quantity alias (uint32) -> int on the wire
     assert d["balance"] == "9007199254740993", d["balance"]   # bigint -> decimal string
     assert d["createdAt"] == "2020-01-01T00:00:00+00:00", d["createdAt"]  # tz-normalized
     assert d["class"] == "reserved-name"                      # keyword field uses wire key
@@ -77,6 +79,7 @@ def test_wire_shape():
 def test_type_serde_roundtrip():
     decoded = api.Item.from_dict(_make_item().to_dict())
     assert decoded.tier is api.ItemTier.PREMIUM
+    assert decoded.quantity == 12 and isinstance(decoded.quantity, int)  # Quantity alias round-trips as int
     assert decoded.balance == 9007199254740993 and isinstance(decoded.balance, int)
     assert decoded.createdAt == datetime(2020, 1, 1, tzinfo=timezone.utc)
     assert decoded.class_ == "reserved-name"

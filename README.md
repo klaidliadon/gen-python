@@ -24,6 +24,7 @@ webrpc-gen -schema=service.ridl -target=github.com/webrpc/gen-python@VERSION -cl
 | `-client` | off | generate the `httpx` client |
 | `-server` | off | generate the WSGI server + service `Protocol` |
 | `-schemaHash=false` | on | omit the schema hash + version constants from the header |
+| `-webrpcHeader=false` | on | omit the `Webrpc` version header from client requests |
 
 ## Output
 
